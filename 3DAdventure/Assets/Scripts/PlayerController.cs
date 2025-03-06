@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float camCurXRot;
     public float lookSensitivity;
 
+    public float jumpingZone;
     private Vector2 mouseDelta;
 
     [HideInInspector]
@@ -110,7 +111,13 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("JumpingZone"))
+        {
+            rigidbody.AddForce(Vector3.up * jumpingZone, ForceMode.Impulse);
+        }
+    }
     public void ToggleCursor(bool toggle)
     {
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;

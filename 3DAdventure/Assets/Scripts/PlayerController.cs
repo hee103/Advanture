@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public float lookSensitivity;
 
     public float jumpingZone;
+    private int jumpCount = 0;
+    private int maxJumpCount = 1;
     private Vector2 mouseDelta;
 
     [HideInInspector]
@@ -38,6 +40,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+    }
+    private void Update()
+    {
+        if (IsGrounded())
+        {
+            jumpCount = 0;
+        }
     }
 
     private void LateUpdate()
@@ -67,9 +76,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started /*&& IsGrounded()*/)
+        if (context.phase == InputActionPhase.Started && jumpCount < maxJumpCount)
         {
-            rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+            rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            jumpCount++; // 점프할 때마다 증가
         }
     }
 
@@ -103,10 +113,15 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < rays.Length; i++)
         {
-            if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
+            if (Physics.Raycast(rays[i], 1f, groundLayerMask))
             {
+                //Debug.DrawRay(rays[i].origin, rays[i].direction * 1.2f, Color.red);
                 return true;
             }
+            //else
+            //{
+            //    Debug.Log("바닥 감지가 안된다용");
+            //}
         }
 
         return false;

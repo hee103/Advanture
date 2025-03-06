@@ -11,7 +11,7 @@ public class CharacterManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = new GameObject("CharacerManager").AddComponent<CharacterManager>();
+                _instance = new GameObject("CharacterManager").AddComponent<CharacterManager>();
             }
             return _instance;
         }
@@ -33,10 +33,10 @@ public class CharacterManager : MonoBehaviour
         }
         else
         {
-            //if (_instance != this)
-            //{
-            //    Destroy(gameObject);
-            //}
+            if (_instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

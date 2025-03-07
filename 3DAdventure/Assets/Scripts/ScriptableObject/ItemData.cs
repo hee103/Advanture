@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public enum ConsumableType
     Hunger
 }
 
-[SerializeField]
+[Serializable]
 public class ItemDataConsumable
 {
     public ConsumableType Type;
@@ -27,7 +28,7 @@ public class ItemData : ScriptableObject
     public string displayName;
     public string description;
     public ItemType type;
-    public GameObject dropPrefab;
+
 
     [Header("Consumable")]
     public ItemDataConsumable[] consumables;

@@ -16,6 +16,11 @@ public class PlayerCondition : MonoBehaviour
             Die();
         }
     }
+    public void Heal(float amount)
+    {
+        health.Add(amount);
+    }
+
 
     public void Die()
     {

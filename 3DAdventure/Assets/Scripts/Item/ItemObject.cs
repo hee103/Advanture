@@ -1,18 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ItemObject : MonoBehaviour
+public interface IInteractable
 {
-    // Start is called before the first frame update
-    void Start()
+    public string GetInteractPrompt();
+    public void OnUse();
+}
+
+
+public class ItemObject : MonoBehaviour,IInteractable
+{
+    public ItemData data;
+
+    public string GetInteractPrompt()
     {
-        
+        string str = $"{data.displayName}\n{data.description}";
+        return str;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnUse()
     {
-        
+        CharacterManager.Instance.Player.itemData = data;
+
+        // 소비 아이템인지 확인
+        if (data.type == ItemType.Consumable)
+        {
+            foreach (var consumable in data.consumables)
+            {
+                if (consumable.Type == ConsumableType.Health) // 체력 회복 아이템이면
+                {
+                    CharacterManager.Instance.Player.condition.Heal(consumable.value);
+                    break; // 첫 번째 해당 타입의 아이템을 사용하면 종료
+                }
+            }
+        }
+
+        Destroy(gameObject);
     }
+
 }

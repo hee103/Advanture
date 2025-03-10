@@ -36,7 +36,7 @@ public class PlayerCondition : MonoBehaviour
         }
         if (isDashing)
         {
-            DashOverTime(10f);  
+            DashOverTime(20f);  
         }
         else
         {
@@ -116,6 +116,7 @@ public class PlayerCondition : MonoBehaviour
         //}
 
         die.gameObject.SetActive(true);
+        Time.timeScale = 0f;
 
         PlayerController playerController = GetComponent<PlayerController>();
         if (playerController != null)

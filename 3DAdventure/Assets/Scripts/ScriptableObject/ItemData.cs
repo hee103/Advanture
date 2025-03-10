@@ -20,6 +20,7 @@ public class ItemDataConsumable
 {
     public ConsumableType Type;
     public float value;
+    public float duration;
 }
 [CreateAssetMenu(fileName ="Itme",menuName ="New Item")]
 public class ItemData : ScriptableObject

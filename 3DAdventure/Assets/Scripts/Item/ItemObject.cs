@@ -29,7 +29,7 @@ public class ItemObject : MonoBehaviour,IInteractable
             {
                 if (consumable.Type == ConsumableType.Health) // 체력 회복 아이템이면
                 {
-                    CharacterManager.Instance.Player.condition.Heal(consumable.value);
+                    CharacterManager.Instance.Player.condition.HealOverTime(consumable.value, consumable.duration);
                     break; // 첫 번째 해당 타입의 아이템을 사용하면 종료
                 }
             }

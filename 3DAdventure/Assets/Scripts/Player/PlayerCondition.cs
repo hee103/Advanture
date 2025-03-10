@@ -8,9 +8,24 @@ public class PlayerCondition : MonoBehaviour
 {
     public UICondition uiCondition;
     public TextMeshProUGUI die;
+    private PlayerController playerController;
+    private float originalMoveSpeed;
     private bool isDied = false;
-    private bool isHealing = false; // 중복 실행 방지
+    private bool isHealing = false;
+    private bool isDashing = false;
+
     Condition health { get { return uiCondition.health; } }
+    Condition dash { get { return uiCondition.dash; } }
+
+    private void Start()
+    {
+        playerController = GetComponent<PlayerController>();
+        if (playerController == null)
+        {
+            Debug.LogError("PlayerController not found on this object!");
+        }
+        originalMoveSpeed = playerController.moveSpeed;
+    }
 
     private void Update()
     {
@@ -19,9 +34,16 @@ public class PlayerCondition : MonoBehaviour
             Die();
             isDied = true;
         }
+        if (isDashing)
+        {
+            DashOverTime(10f);  
+        }
+        else
+        {
+            RechargeEnergyOverTime(5f); 
+        }
     }
 
-    // 기존 단일 힐 함수 → 지속 힐 기능으로 변경
     public void HealOverTime(float totalAmount, float duration)
     {
         if (!isHealing)
@@ -47,6 +69,39 @@ public class PlayerCondition : MonoBehaviour
         isHealing = false;
     }
 
+    public void DashStart()
+    {
+        isDashing = true;
+        playerController.moveSpeed = originalMoveSpeed + 5f;
+    }
+
+    public void DashStop()
+    {
+        isDashing = false;
+        playerController.moveSpeed = originalMoveSpeed;
+    }
+
+    public void DashOverTime(float amount)
+    {
+        if (playerController != null && dash.curValue > 0)
+        {
+            dash.Subtract(amount * Time.deltaTime);
+        }
+        else
+        {
+            DashStop();
+        }
+    }
+
+
+    public void RechargeEnergyOverTime(float amount)
+    {
+        if (dash.curValue < dash.maxValue) 
+        {
+            dash.Add(amount * Time.deltaTime);  
+        }
+    }
+
     public void Die()
     {
         //Animator animator = GetComponent<Animator>();
@@ -68,8 +123,6 @@ public class PlayerCondition : MonoBehaviour
             playerController.ToggleCursor(true);
         }
     }
-
-
 
 
     public void TakeDamage(int damageAmount)

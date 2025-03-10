@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     private void FixedUpdate()
@@ -170,6 +171,17 @@ public class PlayerController : MonoBehaviour
         canLook = !toggle; 
     }
 
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            playerCondition.DashStart();
+        }
+        else
+        {
+            playerCondition.DashStop();
+        }
 
+    }
 
 }

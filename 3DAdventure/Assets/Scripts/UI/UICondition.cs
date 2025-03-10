@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UICondition : MonoBehaviour
 {
     public Condition health;
-
+    public Condition dash;
     private void Start()
     {
         CharacterManager.Instance.Player.condition.uiCondition = this;

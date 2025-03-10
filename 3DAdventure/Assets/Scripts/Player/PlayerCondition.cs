@@ -1,11 +1,15 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerCondition : MonoBehaviour
 {
     public UICondition uiCondition;
+    public TextMeshProUGUI die;
+    private bool isDied = false;
     private bool isHealing = false; // 중복 실행 방지
-
     Condition health { get { return uiCondition.health; } }
 
     private void Update()
@@ -13,6 +17,7 @@ public class PlayerCondition : MonoBehaviour
         if (health.curValue <= 0f)
         {
             Die();
+            isDied = true;
         }
     }
 
@@ -30,7 +35,7 @@ public class PlayerCondition : MonoBehaviour
         isHealing = true;
 
         float elapsedTime = 0f;
-        float healPerSecond = totalAmount / duration;
+        float healPerSecond = totalAmount;
 
         while (elapsedTime < duration)
         {
@@ -44,8 +49,28 @@ public class PlayerCondition : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("플레이어가 죽었다.");
+        //Animator animator = GetComponent<Animator>();
+
+        //if (animator != null)
+        //{
+        //    animator.SetTrigger("DieTrigger"); // 트리거로 Die 애니메이션 실행
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("Animator component not found on this object.");
+        //}
+
+        die.gameObject.SetActive(true);
+
+        PlayerController playerController = GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.ToggleCursor(true);
+        }
     }
+
+
+
 
     public void TakeDamage(int damageAmount)
     {

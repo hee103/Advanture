@@ -111,12 +111,17 @@ public class PlayerController : MonoBehaviour
 
     void CameraLook()
     {
+        // X축 (위아래) 회전 - 카메라만 회전
         camCurXRot += mouseDelta.y * lookSensitivity;
         camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook);
         cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
 
-        transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
+        // Y축 (좌우) 회전 - Animator 방해 무시하고 강제 적용
+        float yRotation = mouseDelta.x * lookSensitivity;
+        transform.rotation *= Quaternion.Euler(0, yRotation, 0);
     }
+
+
 
     bool IsGrounded()
     {
@@ -162,9 +167,9 @@ public class PlayerController : MonoBehaviour
     public void ToggleCursor(bool toggle)
     {
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
+        canLook = !toggle; 
     }
 
 
-  
+
 }

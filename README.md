@@ -34,3 +34,6 @@
 <레이저 트랩>
 
 ![Image](https://github.com/user-attachments/assets/17db2c41-4670-4454-a624-a2a1b072aed2)
+
+<게임 오버>
+![Image](https://github.com/user-attachments/assets/9695daa6-6c61-4cdb-8e63-fa2a61678db8)

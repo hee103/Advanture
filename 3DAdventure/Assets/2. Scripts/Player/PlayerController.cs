@@ -5,25 +5,25 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
-    private Vector2 curMovementInput;
-    public float jumpPower;
-    public LayerMask groundLayerMask;
+    public float moveSpeed; // 이동 속도
+    private Vector2 curMovementInput; // 현재 입력값
+    public float jumpPower; // 점프 힘
+    public LayerMask groundLayerMask; 
 
     [Header("Look")]
     public Transform cameraContainer;
-    public float minXLook;
-    public float maxXLook;
-    private float camCurXRot;
-    public float lookSensitivity;
+    public float minXLook; //카메라 최소 회전 각도
+    public float maxXLook; // 카메라 최대 회전 각도
+    private float camCurXRot; // 현재 x 회전 각도
+    public float lookSensitivity; // 마우스 이동에 대한 회전 민감도
 
-    public float jumpingZone;
-    private int jumpCount = 0;
-    private int maxJumpCount = 1;
+    public float jumpingZone; // 점프대 힘
+    private int jumpCount = 0; // 현재 점프 횟수
+    private int maxJumpCount = 1; // 최대 점프 횟수
     private Vector2 mouseDelta;
 
     private float fallThreshold = -10f; // 낙하 피해를 받을 최소 속도
-    private float currentVelocity;
+    private float currentVelocity; // 현재 속도
 
     [HideInInspector]
     public bool canLook = true;
@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
         mouseDelta = context.ReadValue<Vector2>();
     }
 
+    // 이동 입력 처리 (WASD 또는 화살표)
     public void OnMoveInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
@@ -92,6 +93,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    // 점프 입력 처리
     public void OnJumpInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started && jumpCount < maxJumpCount)
@@ -101,6 +104,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 이동 처리
     private void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
@@ -110,6 +114,7 @@ public class PlayerController : MonoBehaviour
         rigidbody.velocity = dir;
     }
 
+    // 카메라 회전 처리
     void CameraLook()
     {
         // X축 (위아래) 회전 - 카메라만 회전
@@ -123,7 +128,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
+    // 바닥에 닿았는지 확인
     bool IsGrounded()
     {
         Ray[] rays = new Ray[4]
@@ -138,17 +143,17 @@ public class PlayerController : MonoBehaviour
         {
             if (Physics.Raycast(rays[i], 1f, groundLayerMask))
             {
-                //Debug.DrawRay(rays[i].origin, rays[i].direction * 1.2f, Color.red);
+              
                 return true;
             }
-            //else
-            //{
-            //    Debug.Log("바닥 감지가 안된다용");
-            //}
+
         }
 
         return false;
     }
+
+
+    // 바닥이 Ground 레이어인지 확인
     private bool IsOnGroundLayer()
     {
         RaycastHit hit;
@@ -158,6 +163,8 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+    // 점프대와 충돌 시 추가 점프력 적용
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("JumpingZone"))
@@ -171,6 +178,7 @@ public class PlayerController : MonoBehaviour
         canLook = !toggle; 
     }
 
+    // 대시 입력 처리
     public void OnDash(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)

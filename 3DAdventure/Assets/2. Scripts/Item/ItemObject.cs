@@ -18,6 +18,7 @@ public class ItemObject : MonoBehaviour,IInteractable
         return str;
     }
 
+    // 아이템 사용 시 호출되는 메서드
     public void OnUse()
     {
         CharacterManager.Instance.Player.itemData = data;
@@ -34,7 +35,7 @@ public class ItemObject : MonoBehaviour,IInteractable
                 }
             }
         }
-
+        // 사용 후 아이템 오브젝트를 파괴
         Destroy(gameObject);
     }
 

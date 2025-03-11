@@ -7,14 +7,14 @@ using UnityEngine.UI;
 public class PlayerCondition : MonoBehaviour
 {
     public UICondition uiCondition;
-    public TextMeshProUGUI die;
+    public TextMeshProUGUI die; // 플레이어가 죽었을 때 표시되는 텍스트
     private PlayerController playerController;
-    private float originalMoveSpeed;
-    private bool isDied = false;
-    private bool isHealing = false;
-    private bool isDashing = false;
-    public bool invincible = false; 
-    public float invincibleDuration = 2f;
+    private float originalMoveSpeed;// 원래의 이동 속도
+    private bool isDied = false;// 플레이어가 죽었는지 여부
+    private bool isHealing = false;// 회복 중인지 여부
+    private bool isDashing = false; // 대시 중인지 여부
+    public bool invincible = false; // 무적 상태 여부
+    public float invincibleDuration = 2f;// 무적 지속 시간
 
     Condition health { get { return uiCondition.health; } }
     Condition dash { get { return uiCondition.dash; } }
@@ -26,26 +26,29 @@ public class PlayerCondition : MonoBehaviour
         {
             Debug.LogError("PlayerController not found on this object!");
         }
-        originalMoveSpeed = playerController.moveSpeed;
+        originalMoveSpeed = playerController.moveSpeed; // 원래의 이동 속도 저장
     }
 
     private void Update()
     {
-        if (health.curValue <= 0f)
+        if (health.curValue <= 0f) // 체력이 0 이하이면
         {
-            Die();
-            isDied = true;
+            Die(); // 죽음 처리
+            isDied = true; // 죽었음 상태 설정
         }
+
+        // 대시 중일 때
         if (isDashing)
         {
-            DashOverTime(20f);  
+            DashOverTime(20f); // 대시 중이면 에너지 차감
         }
         else
         {
-            RechargeEnergyOverTime(5f); 
+            RechargeEnergyOverTime(5f); // 대시 중이 아니면 에너지 회복
         }
     }
 
+    // 회복 아이템을 사용했을 때 일정시간마다 체력을 회복하는 함수
     public void HealOverTime(float totalAmount, float duration)
     {
         if (!isHealing)
@@ -71,18 +74,21 @@ public class PlayerCondition : MonoBehaviour
         isHealing = false;
     }
 
+    // 대시 시작
     public void DashStart()
     {
         isDashing = true;
         playerController.moveSpeed = originalMoveSpeed + 5f;
     }
 
+    // 대시 종료
     public void DashStop()
     {
         isDashing = false;
         playerController.moveSpeed = originalMoveSpeed;
     }
 
+    // 대시 중에 에너지를 차감하는 함수
     public void DashOverTime(float amount)
     {
         if (playerController != null && dash.curValue > 0)
@@ -95,7 +101,7 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
-
+    // 일정시간마다 에너지를 회복하는 함수
     public void RechargeEnergyOverTime(float amount)
     {
         if (dash.curValue < dash.maxValue) 
@@ -104,19 +110,9 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
+    // 플레이어가 죽었을 때 호출되는 함수
     public void Die()
     {
-        //Animator animator = GetComponent<Animator>();
-
-        //if (animator != null)
-        //{
-        //    animator.SetTrigger("DieTrigger"); // 트리거로 Die 애니메이션 실행
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Animator component not found on this object.");
-        //}
-
         die.gameObject.SetActive(true);
         Time.timeScale = 0f;
 
@@ -127,7 +123,7 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
-
+    // 피해를 입을 때 호출되는 함수
     public void TakeDamage(int damageAmount)
     {
         if (invincible) return;
@@ -135,6 +131,7 @@ public class PlayerCondition : MonoBehaviour
         StartInvincible();
     }
 
+    // 무적 상태 시작
     public void StartInvincible()
     {
         if (invincible) return; 

@@ -13,6 +13,8 @@ public class PlayerCondition : MonoBehaviour
     private bool isDied = false;
     private bool isHealing = false;
     private bool isDashing = false;
+    public bool invincible = false; 
+    public float invincibleDuration = 2f;
 
     Condition health { get { return uiCondition.health; } }
     Condition dash { get { return uiCondition.dash; } }
@@ -128,6 +130,22 @@ public class PlayerCondition : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
+        if (invincible) return;
         health.Subtract(damageAmount);
+        StartInvincible();
     }
+
+    public void StartInvincible()
+    {
+        if (invincible) return; 
+
+        invincible = true;
+        StartCoroutine(InvincibleTimer());
+    }
+    IEnumerator InvincibleTimer()
+    {
+        yield return new WaitForSeconds(invincibleDuration);
+        invincible = false; 
+    }
+
 }

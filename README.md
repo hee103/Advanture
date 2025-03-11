@@ -1,7 +1,9 @@
 개요
+======
 프로젝트 이름: 3D Adventure
+======
 프로젝트 기간: 25.03.4 ~ 25.03.11
-
+======
 주요기능
 - 캐릭터 이동, 점프, 대쉬, 상호작용(아이템) => Input System 활용
 - 체력 감소/회복, 스태미나 감소/회복 => coroutine 사용
@@ -20,10 +22,13 @@
 ![Image](https://github.com/user-attachments/assets/40c3499f-0f4d-4594-8099-61fff743a0eb)
 
 <낙하 데미지와 회복>
+
 ![Image](https://github.com/user-attachments/assets/b49c8994-2a06-46f8-9d92-f2c820c5f8a5)
 
 <대쉬>
+
 ![Image](https://github.com/user-attachments/assets/4b2d213f-f0bf-4273-8821-f2c3ec6783b9)
 
 <레이저 트랩>
+
 ![Image](https://github.com/user-attachments/assets/17db2c41-4670-4454-a624-a2a1b072aed2)

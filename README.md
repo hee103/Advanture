@@ -37,4 +37,4 @@
 
 <게임 오버>
 
-![Image](https://github.com/user-attachments/assets/9695daa6-6c61-4cdb-8e63-fa2a61678db8)
+![Image](https://github.com/user-attachments/assets/b4073881-e290-4f82-a999-38df7a227e09)
